@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np
-from PIL import Image
+import json1
 import rawpy
 import argparse
 from core import TransInv, RpToTrans
@@ -41,7 +41,7 @@ def Transf_to_UpLookatEye(tmat, up_in_cameraFrame, looking_direction_in_cameraFr
     :param up_in_cameraFrame: The up vector in the camera frame {c1}.
     :param looking_direction_in_cameraFrame: The looking direction vector in the camera frame {c1}.
 
-    :return: A 3x3 matrix where the first column is the up vector, the second column is the looking direction vector, and the third column is the eye vector, all in the reference frame {c2}.
+    :return: A 3x3 matrix where the first column is the up vector, the second column is the lookat point, and the third column is the eye point, all in the reference frame {c2}.
     """
     up=tmat[:3,:3]@up_in_cameraFrame
     looking_direction=tmat[:3,:3]@looking_direction_in_cameraFrame
@@ -84,7 +84,7 @@ def calibrate_and_save_parameters():
     # Define the aruco dictionary and charuco board
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
     board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
-    print(board.getChessboardCorners())
+    #print(board.getChessboardCorners())
     params = cv2.aruco.DetectorParameters()
 
     # Load PNG images from folder
@@ -100,6 +100,7 @@ def calibrate_and_save_parameters():
     newpath = './detectedMarkersDrawn'
     if not os.path.exists(newpath):
         os.makedirs(newpath)
+
     for image_file in image_files:
         image = raw_to_npArray(image_file)
         #image=cv2.imread(image_file)
@@ -141,13 +142,13 @@ def calibrate_and_save_parameters():
     for i in range(len(image_files)):
         if(every_charuco_ids_len[i]>=70):
             good_images.append(image_files[i])
-    print(good_images)
-    sns.barplot({"image": image_files, "number of corners detected": every_charuco_ids_len}, x="image", y="number of corners detected")
+    
+    sns.barplot({"image": list(map(lambda x:x[len(PATH_TO_YOUR_IMAGES+"/"): -4],image_files)), "number of corners detected": every_charuco_ids_len}, x="image", y="number of corners detected")
     plt.show()
     # Calibrate camera
     #print("\n All ChAruCo ids \n", all_charuco_ids, "\n All ChArUco corners \n", all_charuco_corners)
     retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(all_charuco_corners, all_charuco_ids, board, image.shape[:2], None, None)
-
+    json1.writeDistortion(dist_coeffs.flatten())
     project_points.JosepBosch(board, camera_matrix, dist_coeffs, rvecs, tvecs, all_charuco_corners, all_charuco_ids)
     # Save calibration data
     np.save('camera_matrix.npy', camera_matrix)
@@ -167,7 +168,7 @@ def calibrate_and_save_parameters():
     assert len(rvecs) == len(tvecs), "The rotation vector and translation vector must have the same length."
     for i in range(len(rvecs)):
         print('\n', image_files[i], '\n', World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]), '\n')
-
+        json1.writeUpLookatEye(i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
     # Iterate through displaying all the images
     for image_file in image_files:
         image = raw_to_npArray(image_file)
