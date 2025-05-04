@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 import json1
-import rawpy
+import raw
 import argparse
 from core import TransInv, RpToTrans
 import seaborn as sns
@@ -102,7 +102,7 @@ def calibrate_and_save_parameters():
         os.makedirs(newpath)
 
     for image_file in image_files:
-        image = raw_to_npArray(image_file)
+        image = raw.raw_to_npArray(image_file)
         #image=cv2.imread(image_file)
         #print("I am reading image of length", image.shape)
         #print(image.shape, Image.open("0.png").size)
@@ -167,24 +167,18 @@ def calibrate_and_save_parameters():
 
     assert len(rvecs) == len(tvecs), "The rotation vector and translation vector must have the same length."
     for i in range(len(rvecs)):
-        print('\n', image_files[i], '\n', World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]), '\n')
+        #print('\n', image_files[i], '\n', World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]), '\n')
         json1.writeUpLookatEye(i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
     # Iterate through displaying all the images
     for image_file in image_files:
-        image = raw_to_npArray(image_file)
+        image = raw.raw_to_npArray(image_file)
         undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
         # cv2.imshow('Undistorted Image', undistorted_image)
         # cv2.waitKey(0)
         cv2.imwrite("undistorted_images/"+image_file[21:-4]+".png", undistorted_image)
 
     #cv2.destroyAllWindows()
-def raw_to_npArray(image_file):
-    raw = rawpy.imread(image_file)
-    image_rawpy = raw.postprocess()
-    cv2.imwrite("unconverted"+".png", image_rawpy)
-    image = cv2.cvtColor(image_rawpy, cv2.COLOR_RGB2BGR)
-    cv2.imwrite("converted"+".png", image)
-    return image
+
 
 def compareMarkerCorners(marker_corners, marker_corners1):
     for i in range(17):
