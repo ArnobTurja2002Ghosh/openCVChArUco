@@ -9,6 +9,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt 
 import project_points
 import shutil
+import pandas as pd
 # ------------------------------
 # ENTER YOUR REQUIREMENTS HERE:
 ARUCO_DICT = cv2.aruco.DICT_4X4_250
@@ -17,6 +18,7 @@ SQUARE_LENGTH = 10
 MARKER_LENGTH = 7
 # ...
 PATH_TO_YOUR_IMAGES = './calibration_images'
+PATH_TO_YOUR_COLORS = './Colors'
 # ------------------------------
 
 print("We are using openCV version", cv2.__version__)
@@ -80,7 +82,7 @@ def drawDetectedCornersCharuco(img, corners, ids):
         # ids = ids.reshape((ids.size, 1))
         cv2.aruco.drawDetectedCornersCharuco(img, corners, ids, id_color)
 
-def calibrate_and_save_parameters():
+def calibrate_and_save_parameters(calibrate):
     # Define the aruco dictionary and charuco board
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
     board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
@@ -88,7 +90,11 @@ def calibrate_and_save_parameters():
     params = cv2.aruco.DetectorParameters()
 
     # Load PNG images from folder
-    image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".nef")]
+    if(calibrate=="images"):
+        image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".nef")]
+    elif(calibrate=="colors"):
+        image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_COLORS) for name in files]
+        
     image_files.sort()  # Ensure files are in order
     #print("image files", image_files)
     all_charuco_corners = []
@@ -97,12 +103,15 @@ def calibrate_and_save_parameters():
     
 
     shutil.rmtree('./detectedMarkersDrawn')
-    newpath = './detectedMarkersDrawn'
-    if not os.path.exists(newpath):
-        os.makedirs(newpath)
+    shutil.rmtree('./undistorted_images')
+    
+    if not os.path.exists("./detectedMarkersDrawn"):
+        os.makedirs("./detectedMarkersDrawn")
+    if not os.path.exists("./undistorted_images"):
+        os.makedirs("./undistorted_images")
 
     for image_file in image_files:
-        image = raw.raw_to_npArray(image_file)
+        image = raw.raw_to_npArray(image_file) if calibrate=="images" else cv2.imread(image_file)
         #image=cv2.imread(image_file)
         #print("I am reading image of length", image.shape)
         #print(image.shape, Image.open("0.png").size)
@@ -132,12 +141,16 @@ def calibrate_and_save_parameters():
             #print('retval', charuco_retval, 'charuco ids length', charuco_ids)
             drawDetectedCornersCharuco(image_copy, charuco_corners,
                                    charuco_ids)
-            cv2.imwrite("detectedMarkersDrawn/"+image_file[21:-4]+".png", image_copy)
+            cv2.imwrite("detectedMarkersDrawn/"+image_file[image_file.rindex("\\"):-4]+".png", image_copy)
             print('done drawing')
             if charuco_retval:
                 all_charuco_corners.append(charuco_corners)
                 all_charuco_ids.append(charuco_ids)
                 every_charuco_ids_len.append(len(charuco_ids))
+    # if(calibrate=="images"):
+    #     np.save('all_charuco_corners_images.npy', all_charuco_corners)
+    #     np.save('all_charuco_ids_images.npy', all_charuco_ids)
+    
     good_images=[]
     for i in range(len(image_files)):
         if(every_charuco_ids_len[i]>=70):
@@ -171,7 +184,7 @@ def calibrate_and_save_parameters():
         json1.writeUpLookatEye(i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
     # Iterate through displaying all the images
     for image_file in image_files:
-        image = raw.raw_to_npArray(image_file)
+        image = raw.raw_to_npArray(image_file) if calibrate=="images" else cv2.imread(image_file)
         undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
         # cv2.imshow('Undistorted Image', undistorted_image)
         # cv2.waitKey(0)
@@ -179,6 +192,31 @@ def calibrate_and_save_parameters():
 
     #cv2.destroyAllWindows()
 
+def detect_pose(image, camera_matrix, dist_coeffs):
+    # Undistort the image
+    undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
+
+    # Define the aruco dictionary and charuco board
+    dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
+    board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
+    params = cv2.aruco.DetectorParameters()
+
+    # Detect markers in the undistorted image
+    marker_corners, marker_ids, _ = cv2.aruco.detectMarkers(undistorted_image, dictionary, parameters=params)
+
+    # If at least one marker is detected
+    if len(marker_ids) > 0:
+        # Interpolate CharUco corners
+        charuco_retval, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(marker_corners, marker_ids, undistorted_image, board)
+
+        # If enough corners are found, estimate the pose
+        if charuco_retval:
+            retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charuco_corners, charuco_ids, board, camera_matrix, dist_coeffs, None, None)
+
+            # If pose estimation is successful, draw the axis
+            if retval:
+                cv2.drawFrameAxes(undistorted_image, camera_matrix, dist_coeffs, rvec, tvec, length=0.1, thickness=15)
+    return undistorted_image
 
 def compareMarkerCorners(marker_corners, marker_corners1):
     for i in range(17):
@@ -195,8 +233,9 @@ parser.add_argument("--rows", type=int)
 parser.add_argument("--square_length", type=float)
 parser.add_argument("--marker_length", type=float)
 parser.add_argument("--ratio", type=str)
+parser.add_argument("--calibrate", type=str, default="images", help='calibrate images or colors')
 args = parser.parse_args()
 if(args.generate):
     generateCharuco(args.columns, args.rows, args.square_length, args.marker_length, args.ratio)
 else:
-    calibrate_and_save_parameters()
+    calibrate_and_save_parameters(args.calibrate)

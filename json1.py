@@ -42,6 +42,6 @@ def writeDistortion(l1):
     json_object['Data']['tangDistCoeff'] = [l1[2], l1[3]]
     
     #print(json_object)
-    with open('camShader'+'.json', 'w') as outfile:
+    with open('cameraConfigs/camShader'+'.json', 'w') as outfile:
         # Writing to json file
         json.dump(json_object, outfile, indent=4)
