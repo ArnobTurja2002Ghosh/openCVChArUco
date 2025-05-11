@@ -37,23 +37,23 @@ pip install opencv-contrib-python numpy
 ---
 
 ## 🚀 Getting Started
-
+Work on this section is in progress.
 ### Run ChArUco Board Detection
 
 ```bash
-python charuco_detector.py
+
 ```
 
 ### Run Calibration
 
 ```bash
-python charuco_calibrator.py --output calibration.yaml
+
 ```
 
-### Draw Board (optional)
+### Draw Board
 
 ```bash
-python draw_board.py --save board.png
+
 ```
 
 ---
