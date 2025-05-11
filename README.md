@@ -19,19 +19,13 @@ This project is intended both for self-learning and to help others understand an
 ## 📦 Dependencies
 
 - Python 3.8+
-- OpenCV (`opencv-contrib-python`)
+- OpenCV 4.8.1 (`opencv-contrib-python`)
 - NumPy
 
 Install with:
 
 ```bash
-pip install -r requirements.txt
-```
-
-Or manually:
-
-```bash
-pip install opencv-contrib-python numpy
+pip install opencv-contrib-python==4.8.1.78 numpy
 ```
 
 ---
