@@ -106,6 +106,7 @@ This project was built with the help of the following articles, guides, and comm
     - Licensed under the MIT License  
     - Copyright (c) 2019 NxRLab 
     - [MIT License Text](https://github.com/NxRLab/ModernRobotics/blob/master/LICENSE)
+- [Understanding Lens Distortion](https://learnopencv.com/understanding-lens-distortion/)
 ---
 
 Happy learning and posing! 🎯
