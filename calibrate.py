@@ -82,6 +82,7 @@ def drawDetectedCornersCharuco(img, corners, ids):
         # ids = ids.reshape((ids.size, 1))
         cv2.aruco.drawDetectedCornersCharuco(img, corners, ids, id_color)
 def process_calibration_results(calibrate, board, all_charuco_corners, all_charuco_ids):
+    
     camera_matrix = np.load('camera_matrix.npy')
     dist_coeffs = np.load('dist_coeffs.npy')
     rvecs = np.load('rvecs.npy')
@@ -146,7 +147,7 @@ def calibrate_and_save_parameters(calibrate):
         os.makedirs("./detectedMarkersDrawn")
     if not os.path.exists("./undistorted_images"):
         os.makedirs("./undistorted_images")
-
+    
     for image_file in image_files:
         image = raw.raw_to_npArray(image_file) if calibrate=="images" else cv2.imread(image_file)
         #image=cv2.imread(image_file)

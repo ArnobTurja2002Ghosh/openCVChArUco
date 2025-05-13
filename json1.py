@@ -9,7 +9,7 @@ image_files.sort()  # Ensure files are in order
 def writeUpLookatEye(i, matrix):
     #print("writing", i, "matrix")
     image = raw.raw_to_npArray(image_files[i])
-    with open('cameraConfigs/camShader.json', 'r') as openfile:
+    with open('CameraShaders/camShader.json', 'r') as openfile:
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
@@ -19,13 +19,13 @@ def writeUpLookatEye(i, matrix):
     json_object['Data']['Eye'] = matrix[:, 2].tolist()
     json_object['Data']['Name']= image_files[i][len(PATH_TO_YOUR_IMAGES+"/"):-4]
     #print(json_object)
-    with open('cameraConfigs/camShader'+json_object['Data']['Name']+'.json', 'w') as outfile:
+    with open('CameraShaders/camShader'+json_object['Data']['Name']+'.json', 'w') as outfile:
         # Writing to json file
         json.dump(json_object, outfile, indent=4)
     with open('JsonStructure.json', 'r') as openfile:
         # Reading from json file
         json_object1 = json.load(openfile)
-        json_object1['cameraConfig'].append('camShader'+json_object['Data']['Name']+'.json')
+        json_object1['cameraConfig'].append('Default\\CameraShaders\\camShader'+json_object['Data']['Name']+'.json')
     with open('JsonStructure.json', 'w') as outfile:
         # Writing to json file
         json.dump(json_object1, outfile, indent=4)
@@ -34,14 +34,22 @@ def writeUpLookatEye(i, matrix):
 
 def writeDistortion(l1):
     #print("writing", i, "matrix")
-    with open('cameraConfigs/camShader.json', 'r') as openfile:
+    with open('CameraShaders/camShader.json', 'r') as openfile:
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
-    json_object['Data']['radialDistCoeff'] = [l1[0], l1[1], l1[-1]]
-    json_object['Data']['tangDistCoeff'] = [l1[2], l1[3]]
-    
+    #json_object['Data']['radialDistCoeff'] = [l1[0], l1[1], l1[-1]]
+    #json_object['Data']['tangDistCoeff'] = [l1[2], l1[3]]
+    json_object['Data']['radialDistCoeff'] = [0, 0, 0]
+    json_object['Data']['tangDistCoeff'] = [0, 0, 0]
     #print(json_object)
-    with open('cameraConfigs/camShader'+'.json', 'w') as outfile:
+    with open('CameraShaders/camShader'+'.json', 'w') as outfile:
         # Writing to json file
         json.dump(json_object, outfile, indent=4)
+    with open('JsonStructure.json', 'r') as openfile:
+        # Reading from json file
+        json_object1 = json.load(openfile)
+        json_object1['cameraConfig']=[]
+    with open('JsonStructure.json', 'w') as outfile:
+        # Writing to json file
+        json.dump(json_object1, outfile, indent=4)

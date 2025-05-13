@@ -1,0 +1,41 @@
+{
+    "Header": {
+        "profile": "raygen",
+        "type": "camPinHole",
+        "module": "CamShader.cu",
+        "entryFunctionName": "__raygen__pinhole"
+    },
+    "Data": {
+        "Eye": [
+            -721.74734517,
+            -61.09538825,
+            1339.44921154
+        ],
+        "Lookat": [
+            -721.21096094,
+            -61.11841851,
+            1338.60555191
+        ],
+        "Up": [
+            -0.00312002,
+            0.9996749,
+            -0.02530552
+        ],
+        "radialDistCoeff": [
+            0,
+            0,
+            0
+        ],
+        "tangDistCoeff": [
+            0,
+            0,
+            0
+        ],
+        "FovY": 16,
+        "Res": [
+            752,
+            500
+        ],
+        "Name": "camShader"
+    }
+}
