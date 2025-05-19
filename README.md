@@ -106,6 +106,7 @@ This project was built with the help of the following articles, guides, and comm
     - Copyright (c) 2019 NxRLab 
     - [MIT License Text](https://github.com/NxRLab/ModernRobotics/blob/master/LICENSE)
 - [Understanding Lens Distortion](https://learnopencv.com/understanding-lens-distortion/)
+- [Camera Calibration Intro Theory](https://euratom-software.github.io/calcam/html/intro_theory.html)
 ---
 
 Happy learning and posing! 🎯
