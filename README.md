@@ -59,7 +59,9 @@ Check [calibrate.py](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/blob/m
 
 Contributions are welcome!
 
-If you're interested in adding features (e.g., pose estimation), improving usability, or expanding documentation, feel free to open a pull request. Keep the educational purpose in mind: code clarity and comments are appreciated.
+If you're interested in adding features (Refer to the [Issues](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/issues) for bugs and prospective features in this project), improving usability, or expanding documentation, feel free to open a pull request. Keep the educational purpose in mind: code clarity and comments are appreciated.
+
+Any question regarding this project (even if it is an ELI5 question) can be shot to arnobg2002@gmail.com via email or [Arnob1](https://www.linkedin.com/in/arnob1/) via LinkedIn.
 
 ---
 
