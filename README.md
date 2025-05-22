@@ -41,16 +41,17 @@ The above command tells the script to calibrate using the images in the `calibra
 ```bash
 python calibrate.py --calibrate colors
 ```
-which tells the script to calibrate using the png images in the `Colors` folder.
+which tells the script to calibrate using the png images in the [Colors directory](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/tree/main/Colors).
 If the script runs successfully, you will see two folders:
-1. `detectedMarkersDrawn`
-2. `undistorted_images`
+1. `detectedMarkersDrawn` containing images with detected markers, corners and axes drawn
+2. `undistorted_images` containing undistorted images
+
 ## 🔧 Configuration
 
-Check `config.py` (or relevant settings section) to modify:
+Check [calibrate.py](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/blob/main/calibrate.py) to modify:
 - ChArUco board size (number of squares)
-- Marker size vs square size
-- ArUco dictionary (`DICT_4X4_50`, `DICT_5X5_100`, etc.)
+- Marker size vs square size 
+- ArUco dictionary (`DICT_4X4_50`, `DICT_5X5_100`, etc.). For now it is hard-coded to `cv2.aruco.DICT_4X4_250`.
 
 ---
 
