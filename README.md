@@ -32,26 +32,19 @@ pip install opencv-contrib-python==4.8.1.78 numpy
 
 ## 🚀 Getting Started
 Work on this section is in progress.
-### Run ChArUco Board Detection
-
+1. Create a folder called `calibration_images` which contains all the raw Nikon photos, with nef extension, of a 14*7 ChArUco board to be used used for camera calibration.
+2. Run calibration
 ```bash
-
+python calibrate.py --calibrate images
 ```
-
-### Run Calibration
-
+The above command tells the script to calibrate using the images in the `calibration_images` folder. Another possible argument for the calibrate can be:
 ```bash
-
+python calibrate.py --calibrate colors
 ```
-
-### Draw Board
-
-```bash
-
-```
-
----
-
+which tells the script to calibrate using the png images in the `Colors` folder.
+If the script runs successfully, you will see two folders:
+1. `detectedMarkersDrawn`
+2. `undistorted_images`
 ## 🔧 Configuration
 
 Check `config.py` (or relevant settings section) to modify:
