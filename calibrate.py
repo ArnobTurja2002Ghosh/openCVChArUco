@@ -16,10 +16,6 @@ ARUCO_DICT = cv2.aruco.DICT_4X4_250
 
 SQUARE_LENGTH = 10
 MARKER_LENGTH = 7
-# ...
-PATH_TO_YOUR_IMAGES = './calibration_images'
-PATH_TO_YOUR_COLORS = './Colors'
-# ------------------------------
 
 print("We are using openCV version", cv2.__version__)
 
@@ -88,7 +84,7 @@ def process_calibration_results(calibrate, board, all_charuco_corners, all_charu
     rvecs = np.load('rvecs.npy')
     tvecs = np.load('tvecs.npy')
     json1.writeDistortion(dist_coeffs.flatten())
-    project_points.JosepBosch(board, camera_matrix, dist_coeffs, rvecs, tvecs, all_charuco_corners, all_charuco_ids)
+    project_points.JosepBosch(calibrate, board, camera_matrix, dist_coeffs, rvecs, tvecs, all_charuco_corners, all_charuco_ids)
 
     
     print( '\n Camera Matrix', camera_matrix, '\n', "Distortion coeff", dist_coeffs, '\n RVec', rvecs, '\n TVec', tvecs, '\n Rotation Matrix', cv2.Rodrigues(rvecs[0])[0])
@@ -105,21 +101,19 @@ def process_calibration_results(calibrate, board, all_charuco_corners, all_charu
     assert len(rvecs) == len(tvecs), "The rotation vector and translation vector must have the same length."
     for i in range(len(rvecs)):
         #print('\n', image_files[i], '\n', World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]), '\n')
-        json1.writeUpLookatEye(i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
+        json1.writeUpLookatEye(calibrate, i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
     # Iterate through displaying all the images
     # Load PNG images from folder
-    if(calibrate=="images"):
-        image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".nef")]
-    elif(calibrate=="colors"):
-        image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_COLORS) for name in files]
-        
-    image_files.sort()  # Ensure files are in order
+    image_files = json1.getImageFiles(calibrate)
     for image_file in image_files:
-        image = raw.raw_to_npArray(image_file) if calibrate=="images" else cv2.imread(image_file)
+        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
         undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
         # cv2.imshow('Undistorted Image', undistorted_image)
         # cv2.waitKey(0)
-        cv2.imwrite("undistorted_images/"+image_file[21:-4]+".png", undistorted_image)
+        if calibrate=="paired":
+            cv2.imwrite("undistorted_images/"+image_file[image_file.index("\\"):image_file.rindex("\\")]+".png", undistorted_image)
+        else:
+            cv2.imwrite("undistorted_images/"+image_file[21:-4]+".png", undistorted_image)
 def calibrate_and_save_parameters(calibrate):
     # Define the aruco dictionary and charuco board
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
@@ -127,13 +121,7 @@ def calibrate_and_save_parameters(calibrate):
     #print(board.getChessboardCorners())
     params = cv2.aruco.DetectorParameters()
 
-    # Load PNG images from folder
-    if(calibrate=="images"):
-        image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".nef")]
-    elif(calibrate=="colors"):
-        image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_COLORS) for name in files]
-        
-    image_files.sort()  # Ensure files are in order
+    image_files = json1.getImageFiles(calibrate)
     #print("image files", image_files)
     all_charuco_corners = []
     all_charuco_ids = []
@@ -149,7 +137,7 @@ def calibrate_and_save_parameters(calibrate):
         os.makedirs("./undistorted_images")
     
     for image_file in image_files:
-        image = raw.raw_to_npArray(image_file) if calibrate=="images" else cv2.imread(image_file)
+        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
         #image=cv2.imread(image_file)
         #print("I am reading image of length", image.shape)
         #print(image.shape, Image.open("0.png").size)
@@ -179,7 +167,10 @@ def calibrate_and_save_parameters(calibrate):
             #print('retval', charuco_retval, 'charuco ids length', charuco_ids)
             drawDetectedCornersCharuco(image_copy, charuco_corners,
                                    charuco_ids)
-            cv2.imwrite("detectedMarkersDrawn/"+image_file[image_file.rindex("\\"):-4]+".png", image_copy)
+            if(calibrate=="paired"):
+                cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].index("\\"):image_files[i].rindex("\\")]+".png", image_copy)
+            else:
+                cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].rindex("\\"):-4]+".png", image_copy)
             print('done drawing')
             if charuco_retval:
                 all_charuco_corners.append(charuco_corners)
@@ -193,9 +184,9 @@ def calibrate_and_save_parameters(calibrate):
     for i in range(len(image_files)):
         if(every_charuco_ids_len[i]>=70):
             good_images.append(image_files[i])
-    
-    sns.barplot({"image": list(map(lambda x:x[len(PATH_TO_YOUR_IMAGES+"/"): -4],image_files)), "number of corners detected": every_charuco_ids_len}, x="image", y="number of corners detected")
-    plt.show()
+    if calibrate!="paired":
+        sns.barplot({"image": list(map(lambda x:x[x.index("\\"): -4],image_files)), "number of corners detected": every_charuco_ids_len}, x="image", y="number of corners detected")
+        plt.show()
     # Calibrate camera
     #print("\n All ChAruCo ids \n", all_charuco_ids, "\n All ChArUco corners \n", all_charuco_corners)
     retval, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.aruco.calibrateCameraCharuco(all_charuco_corners, all_charuco_ids, board, image.shape[:2], None, None)
@@ -204,12 +195,11 @@ def calibrate_and_save_parameters(calibrate):
     np.save('rvecs.npy', rvecs)
     np.save('tvecs.npy', tvecs)
     process_calibration_results(calibrate, board, all_charuco_corners, all_charuco_ids)
-def detect_pose(i, camera_matrix, dist_coeffs):
+def detect_pose(i, camera_matrix, dist_coeffs, calibrate):
     # Undistort the image
-    image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_COLORS) for name in files]
-        
-    image_files.sort()  # Ensure files are in order
-    image = cv2.imread(image_files[i])
+    image_files = json1.getImageFiles(calibrate)
+    print("reading", image_files[i])
+    image = raw.raw_to_npArray(image_files[i]) if (calibrate=="images" or calibrate=="paired") else cv2.imread(image_files[i])
     image_copy = image.copy()
     undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
 
@@ -221,14 +211,18 @@ def detect_pose(i, camera_matrix, dist_coeffs):
 
     # Detect markers in the undistorted image
     marker_corners, marker_ids, _ = cv2.aruco.detectMarkers(undistorted_image, dictionary, parameters=params)
-      
+    
     # If at least one marker is detected
     if len(marker_ids) > 0:
         cv2.aruco.drawDetectedMarkers(image_copy, marker_corners, marker_ids)
         # Interpolate CharUco corners
         charuco_retval, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(marker_corners, marker_ids, undistorted_image, board)
+        #print('charuco ids', charuco_ids)
         drawDetectedCornersCharuco(image_copy, charuco_corners, charuco_ids)
-        cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].rindex("\\"):-4]+".png", image_copy)
+        if(calibrate=="paired"):
+            cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].index("\\"):image_files[i].rindex("\\")]+".png", image_copy)
+        else:
+            cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].rindex("\\"):-4]+".png", image_copy)
         # If enough corners are found, estimate the pose
         if charuco_retval:
             retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charuco_corners, charuco_ids, board, camera_matrix, dist_coeffs, None, None)
@@ -253,9 +247,9 @@ def detectPoseCharucoBoard(calibrate):
         os.makedirs("./detectedMarkersDrawn")
     if not os.path.exists("./undistorted_images"):
         os.makedirs("./undistorted_images")
-
-    for i in range(len(os.listdir(PATH_TO_YOUR_COLORS))):
-        rvec, tvec, charuco_corners, charuco_ids=detect_pose(i, camera_matrix, dist_coeffs)
+    print('image files', json1.getImageFiles(calibrate))
+    for i in range(len(json1.getImageFiles(calibrate))):
+        rvec, tvec, charuco_corners, charuco_ids=detect_pose(i, camera_matrix, dist_coeffs, calibrate)
         all_charuco_corners.append(charuco_corners)
         all_charuco_ids.append(charuco_ids)
         rvecs.append(rvec)

@@ -6,26 +6,18 @@
         "Json/LfConfig/LF3.json"
     ],
     "cameraConfig": [
-        "Default\\CameraShaders\\camShader0_5.json",
-        "Default\\CameraShaders\\camShader15_5.json",
-        "Default\\CameraShaders\\camShader16_5.json",
-        "Default\\CameraShaders\\camShader18_5.json",
-        "Default\\CameraShaders\\camShader1_5.json",
-        "Default\\CameraShaders\\camShader2_4.json",
-        "Default\\CameraShaders\\camShader3_3.json",
+        "Default\\CameraShaders\\camShader0.json",
+        "Default\\CameraShaders\\camShader10.json",
+        "Default\\CameraShaders\\camShader11.json",
+        "Default\\CameraShaders\\camShader12.json",
+        "Default\\CameraShaders\\camShader13.json",
+        "Default\\CameraShaders\\camShader1.json",
+        "Default\\CameraShaders\\camShader2.json",
+        "Default\\CameraShaders\\camShader3.json",
         "Default\\CameraShaders\\camShader4.json",
-        "Default\\CameraShaders\\camShader4_3.json",
-        "Default\\CameraShaders\\camShader4_4.json",
-        "Default\\CameraShaders\\camShader4_5.json",
-        "Default\\CameraShaders\\camShader5_4.json",
-        "Default\\CameraShaders\\camShader5_5.json",
-        "Default\\CameraShaders\\camShader6_5.json",
-        "Default\\CameraShaders\\camShader7_4.json",
-        "Default\\CameraShaders\\camShader7_5.json",
-        "Default\\CameraShaders\\camShader8_2.json",
-        "Default\\CameraShaders\\camShader8_4.json",
-        "Default\\CameraShaders\\camShader9_2.json",
-        "Default\\CameraShaders\\camShader9_3.json",
-        "Default\\CameraShaders\\camShader9_4.json"
+        "Default\\CameraShaders\\camShader6.json",
+        "Default\\CameraShaders\\camShader7.json",
+        "Default\\CameraShaders\\camShader8.json",
+        "Default\\CameraShaders\\camShader9.json"
     ]
 }

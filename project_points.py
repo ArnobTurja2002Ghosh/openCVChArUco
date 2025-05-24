@@ -13,7 +13,7 @@ def projectPoints(charucoIds, charucoCorners, img_name, cameraMatrix, distCoeffs
     imgPoints_proj, _ = cv2.projectPoints(objPoints, rvec, tvec, cameraMatrix, distCoeffs)
     img= cv2.imread(img_name)
     
-    cv2.drawFrameAxes(img, cameraMatrix, distCoeffs, rvec, tvec, length=341.4/16, thickness=15)
+    cv2.drawFrameAxes(img, cameraMatrix, distCoeffs, rvec, tvec, length=341.4/16, thickness=10)
     # Draw comparison between detected and projected points
     for detected, projected in zip(charucoCorners, imgPoints_proj):
         x1, y1 = int(detected[0][0]), int(detected[0][1])  # Detected
@@ -31,7 +31,7 @@ def projectPoints(charucoIds, charucoCorners, img_name, cameraMatrix, distCoeffs
     cv2.imwrite(img_name, img)
     print("Saved image with reprojection error: ", img_name[23:])
 
-def JosepBosch(board, camera_matrix, dist_coeffs, rvecs, tvecs, charucoCorners, charucoIds):
+def JosepBosch(calibrate, board, camera_matrix, dist_coeffs, rvecs, tvecs, charucoCorners, charucoIds):
     #Compute mean of reprojection error
     tot_error=0
     total_points=0
@@ -42,7 +42,12 @@ def JosepBosch(board, camera_matrix, dist_coeffs, rvecs, tvecs, charucoCorners, 
     #print("obj points", obj_points)
     img_points = charucoCorners.copy()
     image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".png")]
-    image_files.sort()
+    
+    if calibrate=="paired":
+        image_files.sort(key=lambda x: x.replace(".png", "\\"))
+    else:
+        image_files.sort()
+    print("image files", image_files)
     for i in range(len(obj_points)):
         reprojected_points, _ = cv2.projectPoints(obj_points[i], rvecs[i], tvecs[i], camera_matrix, dist_coeffs)
         
