@@ -151,6 +151,8 @@ This project was built with the help of the following articles, guides, and comm
     - [MIT License Text](https://github.com/NxRLab/ModernRobotics/blob/master/LICENSE)
 - [Understanding Lens Distortion](https://learnopencv.com/understanding-lens-distortion/)
 - [Camera Calibration Intro Theory](https://euratom-software.github.io/calcam/html/intro_theory.html)
+- [ISO, Aperture & Shutter Speed](https://priscilaelias.medium.com/learn-exposure-easily-iso-aperture-shutter-speed-10627a964c01)
+  - Not directly related to this project but to run this project you will need to take several photos of a ChArUco board and ISO, Aperture & Shutter Speed are generally some things to consider when taking photos. Just a good read.
 ---
 
 Happy learning and posing! 🎯
