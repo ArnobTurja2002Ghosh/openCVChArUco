@@ -42,8 +42,6 @@ def writeUpLookatEye(calibrate, i, matrix):
     with open('JsonStructure.json', 'w') as outfile:
         # Writing to json file
         json.dump(json_object1, outfile, indent=4)
-    
-
 
 def writeDistortion(l1):
     #print("writing", i, "matrix")

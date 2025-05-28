@@ -136,7 +136,7 @@ def calibrate_and_save_parameters(calibrate):
     if not os.path.exists("./undistorted_images"):
         os.makedirs("./undistorted_images")
     
-    for image_file in image_files:
+    for i, image_file in enumerate(image_files):
         image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
         #image=cv2.imread(image_file)
         #print("I am reading image of length", image.shape)
@@ -232,6 +232,7 @@ def detectPoseCharucoBoard(calibrate):
     # Load the camera matrix and distortion coefficients
     camera_matrix = np.load('camera_matrix.npy')
     dist_coeffs = np.load('dist_coeffs.npy')
+    print( '\n Camera Matrix', camera_matrix, '\n', "Distortion coeff", dist_coeffs)
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
     board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
 

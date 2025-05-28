@@ -4,6 +4,7 @@ import numpy as np
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
+import math
 PATH_TO_YOUR_IMAGES = './detectedMarkersDrawn'
 def projectPoints(charucoIds, charucoCorners, img_name, cameraMatrix, distCoeffs, rvec, tvec, board):
     
@@ -65,7 +66,10 @@ def JosepBosch(calibrate, board, camera_matrix, dist_coeffs, rvecs, tvecs, charu
         projectPoints(charucoIds[i], charucoCorners[i], image_files[i], camera_matrix, dist_coeffs, rvecs[i], tvecs[i], board)
     print("These images have error less than 2", lessErrorImages)
     print(tot_error_list)
-    sns.scatterplot(data={"tot_error": tot_error_list, "total_points":total_points_list}, x="total_points", y="tot_error")
+    ax=sns.scatterplot(data={"tot_error": tot_error_list, "total_points":total_points_list}, x="total_points", y="tot_error")
+    for i, txt in enumerate(image_files):
+        if tot_error_list[i] < math.ceil(min(tot_error_list)):
+            ax.annotate(txt[txt.rindex("\\"):], (total_points_list[i], tot_error_list[i]))
     plt.show()
     mean_error=np.sqrt(tot_error/total_points)
     print("Mean reprojection error v1: ", mean_error)
