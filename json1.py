@@ -1,6 +1,6 @@
 import json
 import os
-import cv2
+import math
 import raw
 PATH_TO_YOUR_IMAGES = './calibration_images'
 PATH_TO_YOUR_COLORS = './Colors'
@@ -23,10 +23,11 @@ def writeUpLookatEye( camera_matrix, calibrate, i, matrix):
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
-    json_object['Data']['Res'] = [2*max(camera_matrix[0,2], image.shape[1]-camera_matrix[0,2]), 2*max(camera_matrix[1,2], image.shape[0]-camera_matrix[1,2])]
+    json_object['Data']['Res'] = [2*round(max(camera_matrix[0,2], image.shape[1]-camera_matrix[0,2])), 2*round(max(camera_matrix[1,2], image.shape[0]-camera_matrix[1,2]))]
     json_object['Data']['Up'] = matrix[:, 0].tolist()
     json_object['Data']['Lookat'] = matrix[:, 1].tolist()
     json_object['Data']['Eye'] = matrix[:, 2].tolist()
+    json_object['Data']['FovY']= round(math.degrees(2 * math.atan(image.shape[0] / (2 * camera_matrix[1,1]))))
     if calibrate=="paired":
         json_object['Data']['Name']= image_files[i][len(PATH_TO_YOUR_PAIRED+"/"):image_files[i].rfind("\\")]
     else:
