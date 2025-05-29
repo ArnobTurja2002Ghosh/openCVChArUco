@@ -101,7 +101,7 @@ def process_calibration_results(calibrate, board, all_charuco_corners, all_charu
     assert len(rvecs) == len(tvecs), "The rotation vector and translation vector must have the same length."
     for i in range(len(rvecs)):
         #print('\n', image_files[i], '\n', World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]), '\n')
-        json1.writeUpLookatEye(calibrate, i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
+        json1.writeUpLookatEye(camera_matrix, calibrate, i, World_to_ChArUco[:3,:3]@Transf_to_UpLookatEye(TransfInv(rvecs[i], tvecs[i]), [[0], [-1], [0]], [[0], [0], [1]]))
     # Iterate through displaying all the images
     # Load PNG images from folder
     image_files = json1.getImageFiles(calibrate)

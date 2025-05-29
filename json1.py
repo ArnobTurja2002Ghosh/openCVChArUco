@@ -15,7 +15,7 @@ def getImageFiles(calibrate):
         image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_PAIRED) for name in files if name.endswith("_0.nef")]
     image_files.sort()  # Ensure files are in order
     return image_files
-def writeUpLookatEye(calibrate, i, matrix):
+def writeUpLookatEye( camera_matrix, calibrate, i, matrix):
     image_files = getImageFiles(calibrate)
     #print("writing", i, "matrix")
     image = raw.raw_to_npArray(image_files[i])
@@ -23,7 +23,7 @@ def writeUpLookatEye(calibrate, i, matrix):
         # Reading from json file
         json_object = json.load(openfile)
     #print(json_object)
-    json_object['Data']['Res'] = [image.shape[1], image.shape[0]]
+    json_object['Data']['Res'] = [2*max(camera_matrix[0,2], image.shape[1]-camera_matrix[0,2]), 2*max(camera_matrix[1,2], image.shape[0]-camera_matrix[1,2])]
     json_object['Data']['Up'] = matrix[:, 0].tolist()
     json_object['Data']['Lookat'] = matrix[:, 1].tolist()
     json_object['Data']['Eye'] = matrix[:, 2].tolist()
