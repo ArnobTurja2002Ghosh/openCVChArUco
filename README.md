@@ -33,16 +33,28 @@ pip install opencv-contrib-python==4.8.1.78 numpy
 
 ## 🚀 Getting Started
 Work on this section is in progress.
+### images
 1. Create a folder called `calibration_images` which contains all the raw Nikon photos, with nef extension, of a 14*7 ChArUco board to be used used for camera calibration.
 2. Run calibration
 ```bash
 python calibrate.py --calibrate images
 ```
-The above command tells the script to calibrate using the images in the `calibration_images` folder. Another possible argument for the calibrate can be:
+The above command tells the script to calibrate using the images in the `calibration_images` folder. 
+### colors
+1. Use the [Colors directory](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/tree/main/Colors) included with this repository. It is included to give you an idea of the structure of the Colors folder. Feel free to replace the images, just be aware of the folder structure and the file format. But just for the sake of getting started, just ensure the `Colors` folder - nothing else to do in this step.
+2. Run calibration
 ```bash
 python calibrate.py --calibrate colors
 ```
-which tells the script to calibrate using the png images in the [Colors directory](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/tree/main/Colors).
+which tells the script to calibrate using the png images in the `Colors directory`.
+### paired
+1. Create a folder called `pairedImages` and refer to [pairedImages1](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/tree/main/pairedImages1), included with this repository, to understand the structure of this folder. If you want you can just rename the `pairedImages1` to `pairedImages` and jump to the next step - that works too. Just be aware of the naming scheme that:
+  - `_0.nef` tells the script that you want to use the image for calibration, i.e. it is a photo of a ChArUco board
+  - `_1.nef` tells the script that you do not want to use the image for calibration.
+2. Run calibration
+```bash
+python calibrate.py --calibrate paired
+```
 If the script runs successfully, you will see two folders:
 1. `detectedMarkersDrawn` containing images with detected markers, corners and axes drawn
 2. `undistorted_images` containing undistorted images
