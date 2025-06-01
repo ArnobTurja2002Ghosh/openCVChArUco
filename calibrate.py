@@ -127,14 +127,13 @@ def calibrate_and_save_parameters(calibrate):
     all_charuco_ids = []
     every_charuco_ids_len =[]
     
-
-    shutil.rmtree('./detectedMarkersDrawn')
-    shutil.rmtree('./undistorted_images')
+    if os.path.exists("./detectedMarkersDrawn"):
+        shutil.rmtree('./detectedMarkersDrawn')
+    if os.path.exists("./undistorted_images"):
+        shutil.rmtree('./undistorted_images')
     
-    if not os.path.exists("./detectedMarkersDrawn"):
-        os.makedirs("./detectedMarkersDrawn")
-    if not os.path.exists("./undistorted_images"):
-        os.makedirs("./undistorted_images")
+    os.makedirs("./detectedMarkersDrawn")
+    os.makedirs("./undistorted_images")
     
     for i, image_file in enumerate(image_files):
         image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
