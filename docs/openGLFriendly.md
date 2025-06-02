@@ -3,8 +3,9 @@
     - where it is aimed
     - which way is up
     
-    Often, programmers construct a scene around the origin or some other convenient location and then want to look at it from an arbitrary point to get a good view of it. As its name suggests, the **gluLookAt()** utility routine is designed for just this purpose. It takes three sets of arguments, which specify the location of the viewpoint, define a reference point toward which the camera is aimed, and indicate which direction is up.
-    <table>
+Often, programmers construct a scene around the origin or some other convenient location and then want to look at it from an arbitrary point to get a good view of it. As its name suggests, the **gluLookAt()** utility routine is designed for just this purpose. It takes three sets of arguments, which specify the location of the viewpoint, define a reference point toward which the camera is aimed, and indicate which direction is up.
+    
+<table>
       <tr>
         <th> From OpenGL </th>
         <th> From our json </th>
@@ -39,10 +40,10 @@
           ],
         </td>
       </tr>
-    </table>
+</table>
     
-      - The desired viewpoint is specified by eyeX, eyeY, and eyeZ
-      - The centerX, centerY, and centerZ arguments specify any point along the desired line of sight
-      - The upX, upY, and upZ arguments indicate which direction is up
-    
-    Information about OpenGL in this documentation have been taken from chapter-3 of [this book](https://www.amazon.ca/OpenGL%C2%AE-Programming-Guide-Official-Learning/dp/0201604582)
+- The desired viewpoint is specified by eyeX, eyeY, and eyeZ
+- The centerX, centerY, and centerZ arguments specify any point along the desired line of sight
+- The upX, upY, and upZ arguments indicate which direction is up
+
+Information about OpenGL in this documentation have been taken from chapter-3 of [this book](https://www.amazon.ca/OpenGL%C2%AE-Programming-Guide-Official-Learning/dp/0201604582)
