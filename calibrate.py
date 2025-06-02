@@ -9,7 +9,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt 
 import project_points
 import shutil
-import pandas as pd
 # ------------------------------
 # ENTER YOUR REQUIREMENTS HERE:
 ARUCO_DICT = cv2.aruco.DICT_4X4_250
