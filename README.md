@@ -32,7 +32,6 @@ pip install opencv-contrib-python==4.8.1.78 numpy
 ---
 
 ## 🚀 Getting Started
-Work on this section is in progress.
 ### images
 1. Create a folder called `calibration_images` which contains all the raw Nikon photos, with nef extension, of a 14*7 ChArUco board to be used used for camera calibration.
 2. Run calibration
