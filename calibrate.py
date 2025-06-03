@@ -225,7 +225,7 @@ def detect_pose(i, camera_matrix, dist_coeffs, calibrate):
         if charuco_retval:
             retval, rvec, tvec = cv2.aruco.estimatePoseCharucoBoard(charuco_corners, charuco_ids, board, camera_matrix, dist_coeffs, None, None)
             return rvec, tvec, charuco_corners, charuco_ids
-
+    return None
 def detectPoseCharucoBoard(calibrate):
     # Load the camera matrix and distortion coefficients
     camera_matrix = np.load('camera_matrix.npy')

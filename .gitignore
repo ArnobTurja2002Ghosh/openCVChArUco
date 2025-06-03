@@ -5,3 +5,4 @@ projectionError/
 scatterPlots/
 undistorted_images/
 /pairedImages
+ruff.toml

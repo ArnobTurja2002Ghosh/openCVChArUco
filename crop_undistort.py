@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
-camera_matrix = np.load('camera_matrix.npy')
-dist_coeffs = np.load('dist_coeffs.npy')
 import raw
 import os
 import time
 import threading
 from GUI import GUI  # Assuming GUI.py is in the same directory
+camera_matrix = np.load('camera_matrix.npy')
+dist_coeffs = np.load('dist_coeffs.npy')
+
 
 PATH_TO_YOUR_PAIRED = './pairedImages'
 PATH_TO_YOUR_CROP = './UndistortAndCropThese'
@@ -32,7 +33,7 @@ def undistort():
 threading.Thread(target=undistort, daemon=True).start()
 gui.show()
 
-image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_CROP) for name in files if not "_" in name]
+image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_CROP) for name in files if "_" not in name]
 image_files.sort()  # Ensure files are in order
 for image_file in image_files:
     image=cv2.imread(image_file)
