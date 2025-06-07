@@ -18,7 +18,7 @@ using too much memory and crashing.
 ## Use print statements but not for output
 Yeah, yeah, print statement... blah blah... linters... blah blah... bad practice... blah blah... logging... blah blah
 
-Feel free to mindlessly use print statements when contributing to this project. You may already see a lot of print statements. But at the same time, feel free to remove any print statement. Removing a print statement will not take away any of the features from this project. A feature shall not be dependent on a print statement. Any addition or removal of print statements by your commits will be ignored when your pull request is reviewed. What does that mean? Don't show your result through a print statement. If your result is a numpy array, save it as an array or image; if your result is some text, dump it in a json (see Why Json?)file. If you want to print your result alongside saving it, feel free, just be aware that any print statements in this project shall be assumed as debuggers and may be removed in any future commit by any contributor. 
+Feel free to mindlessly use print statements when contributing to this project. You may already see a lot of print statements. But at the same time, feel free to remove any print statement. Removing a print statement will not take away any of the features from this project. A feature shall not be dependent on a print statement. Any addition or removal of print statements by your commits will be ignored when your pull request is reviewed. What does that mean? Don't show your result through a print statement. If your result is a numpy array, save it as an array or image; if your result is some text, dump it in a json (see [Why Json?](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/edit/main/docs/codingStyle.md#why-json)) file. If you want to print your result alongside saving it, feel free, just be aware that any print statements in this project shall be assumed as debuggers and may be removed in any future commit by any contributor. 
 
 ## Why Json?
 JSON data in python is essentially a dictionary (at least they are interchangeable, there are some minor differences with the formatting). Have you tried saving a dictionary to a simple text file?
@@ -65,21 +65,21 @@ Python by itself does not know how to convert a string into a dictionary. For th
 The other thing is, if you have a .txt file, how would anybody know that this file contains a data structure without opening the file? If the file extension says "JSON" everybody knows how to interpret the data. Same with .XML, .HTML etc.
 
 Say you do not want to save any dictionary. You just want to save 
-```json
+
         "Eye": [
             eyeX,
             eyeY,
             eyeZ
-        ], <br/>
+        ], 
         "Lookat": [
             centerX,
             centerY,
             centerZ
-        ], <br/>
+        ],
         "Up": [
             upX,
             upY,
             upZ
         ],
-```
+
 as three lists in a file. If you want to save or load a primitive data type, such as int or float or str, sure, `ConfigParser` may be a good decision. But a ConfigParser does not have built-in functionality to read data as Python List. So even for a simple txt file you will have to write custom code to read data as a list. [cite](https://buklijas.info/blog/2018/01/01/always-start-with-simple-solution/)
