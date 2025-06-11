@@ -118,6 +118,7 @@ This project was built with the help of the following articles, guides, and comm
 - [ISO, Aperture & Shutter Speed](https://priscilaelias.medium.com/learn-exposure-easily-iso-aperture-shutter-speed-10627a964c01)
   - Not directly related to this project but to run this project you will need to take several photos of a ChArUco board and ISO, Aperture & Shutter Speed are generally some things to consider when taking photos. Just a good read.
 - [usbipd](https://github.com/dorssel/usbipd-win/releases/tag/v3.0.0)
+- [Thresholing a RGB image using inrange (OpenCV)](https://stackoverflow.com/questions/45787906/thresholing-a-rgb-image-using-inrange-opencv)
 ---
 
 Happy learning and posing! 🎯
