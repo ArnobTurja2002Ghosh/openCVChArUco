@@ -120,6 +120,7 @@ This project was built with the help of the following articles, guides, and comm
 - [usbipd](https://github.com/dorssel/usbipd-win/releases/tag/v3.0.0)
 - [Thresholing a RGB image using inrange (OpenCV)](https://stackoverflow.com/questions/45787906/thresholing-a-rgb-image-using-inrange-opencv)
 - [Image Arithmetics](https://docs.opencv.org/4.x/d0/d86/tutorial_py_image_arithmetics.html)
+- [calibrateCameraCharuco assertion failure fabs(sc) > DBL_EPSILON](https://github.com/opencv/opencv/issues/24676#issuecomment-1849143192)
 - [Otsu Thresholding With OpenCV](https://learnopencv.com/otsu-thresholding-with-opencv/)
   - A problem with simple thresholding is that you have to manually specify the threshold value.
   - We can manually check how good a threshold is by trying different values but it is tedious and it may break down in the real world.
