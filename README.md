@@ -1,6 +1,6 @@
-# 🧠 openCVChArUco
+# 🧠 openCV ChArUco
 
-`openCVChArUco` is an open-source Python project built with OpenCV that focuses on detecting and calibrating cameras using ChArUco markers — a hybrid of ArUco and chessboard markers. The goal is to make it easy for others to learn about marker-based camera calibration, pose estimation, and 3D vision techniques using real-world tools.
+`openCV ChArUco` is an open-source Python project built with OpenCV that focuses on detecting and calibrating cameras using ChArUco markers — a hybrid of ArUco and chessboard markers. The goal is to make it easy for others to learn about marker-based camera calibration, pose estimation, and 3D vision techniques using real-world tools.
 
 This project is intended both for self-learning and to help others understand and experiment with OpenCV's ChArUco tools. Contributions are welcome!
 
