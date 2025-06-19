@@ -124,6 +124,8 @@ This project was built with the help of the following articles, guides, and comm
 - [Otsu Thresholding With OpenCV](https://learnopencv.com/otsu-thresholding-with-opencv/)
   - A problem with simple thresholding is that you have to manually specify the threshold value.
   - We can manually check how good a threshold is by trying different values but it is tedious and it may break down in the real world.
+- [Tutorial Threshold inRange](https://docs.opencv.org/3.4/da/d97/tutorial_threshold_inRange.html)
+  - Should we use hsv for thresholding? Why?
 ---
 
 Happy learning and posing! 🎯
