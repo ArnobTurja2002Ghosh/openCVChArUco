@@ -7,7 +7,6 @@ This project is intended both for self-learning and to help others understand an
 ---
 
 ## 📸 Features
-
 - Detect ChArUco boards using OpenCV's `cv2.aruco` module
 - Calibrate cameras using ChArUco board detection
 - Visualize marker corners and IDs in a folder named detectedMarkersDrawn (the user can create the folder manually before running the script or the script will itself create the folder when running)
@@ -15,6 +14,9 @@ This project is intended both for self-learning and to help others understand an
 - Save the pose estimation from each scene as a json file in the CameraShaders folder
   - Before running the script the user must ensure that there is a file called [camShader.json](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/blob/main/CameraShaders/camShader.json) in the [CameraShaders folder](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/blob/main/CameraShaders/) because this one file provides a template to the script for writing all the json files for pose estimation
   - A feature of this OpenCV project, setting it apart from other ChArUco-related projects, is that you can manufacture a viewing transformation in OpenGL using the numbers from a json file. Now this feature needs a huge explanation! For starters, please refer to [this documentation](https://github.com/ArnobTurja2002Ghosh/openCVChArUco/blob/main/docs/openGLFriendly.md).
+- Crop images
+- Undistort images
+- Convert colored images to binary images
 ---
 
 ## 📦 Dependencies
