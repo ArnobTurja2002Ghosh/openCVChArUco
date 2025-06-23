@@ -128,6 +128,7 @@ This project was built with the help of the following articles, guides, and comm
   - We can manually check how good a threshold is by trying different values but it is tedious and it may break down in the real world.
 - [Tutorial Threshold inRange](https://docs.opencv.org/3.4/da/d97/tutorial_threshold_inRange.html)
   - Should we use hsv for thresholding? Why?
+- [drawing an small axis on pattern works, but a longer axis produce totally wrong result](https://forum.opencv.org/t/how-it-is-possible-drawing-an-small-axis-on-pattern-works-but-a-longer-axis-produce-totally-wrong-result/2934/3)
 ---
 
 Happy learning and posing! 🎯
