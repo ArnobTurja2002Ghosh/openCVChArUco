@@ -49,7 +49,15 @@ def Transf_to_UpLookatEye(tmat, up_in_cameraFrame, looking_direction_in_cameraFr
 
 def generateCharuco(columns, rows, square_length, marker_length, ratio):
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
+
+    # We have to input the size of a square and the size of a marker in the second and third argument.
+    # There are two ways to measure the size of a square: 
+    #          either measure the size of one square, 
+    #          or measure the size of a side of the board and divide it by the number of squares on that side. 
+    # In which unit you will measure is completely your choice but just keep in mind that the translation vectors from OpenCV or the `Eye` output from the scripts in this project will be in the same unit of measurement.
+    # For with the measure you use it will be measured back to you. (Luke 6:38)
     board = cv2.aruco.CharucoBoard((columns, rows), square_length, marker_length, dictionary)
+
     if(ratio=='letter'):
         img = cv2.aruco.CharucoBoard.generateImage(board, (3300, 2550), marginSize=802)
         cv2.imwrite("charuco_3300_2550_802.png", img)
@@ -116,16 +124,26 @@ def process_calibration_results(calibrate, board, all_charuco_corners, all_charu
 def calibrate_and_save_parameters(calibrate):
     # Define the aruco dictionary and charuco board
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
-    board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
-    #print(board.getChessboardCorners())
+
+    # We have to input the size of a square and the size of a marker in the second and third argument.
+    # There are two ways to measure the size of a square: 
+    #          either measure the size of one square, 
+    #          or measure the size of a side of the board and divide it by the number of squares on that side. 
+    # In which unit you will measure is completely your choice but just keep in mind that the translation vectors from OpenCV or the `Eye` output from the scripts in this project will be in the same unit of measurement.
+    # For with the measure you use it will be measured back to you. (Luke 6:38)
+    board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary) 
+
     params = cv2.aruco.DetectorParameters()
 
     image_files = json1.getImageFiles(calibrate)
-    #print("image files", image_files)
     all_charuco_corners = []
     all_charuco_ids = []
     every_charuco_ids_len =[]
     
+    # বিধ্বংসই নবনির্মাণের কারণ, পার্থ।
+    # উদ্ভিদের একটি শাখা কর্তন করলে আরেকটি শাখার জন্ম হয়।
+    # তুমি আজকের বিদ্ধংস নিয়ে কেন ভয়ভীত হচ্ছ?
+    # কাল পুনঃ নবনির্মাণ হবে এ সত্য কি জানো না?
     if os.path.exists("./detectedMarkersDrawn"):
         shutil.rmtree('./detectedMarkersDrawn')
     if os.path.exists("./undistorted_images"):
@@ -204,7 +222,15 @@ def detect_pose(i, camera_matrix, dist_coeffs, calibrate):
     # Define the aruco dictionary and charuco board
     
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
+
+    # We have to input the size of a square and the size of a marker in the second and third argument.
+    # There are two ways to measure the size of a square: 
+    #          either measure the size of one square, 
+    #          or measure the size of a side of the board and divide it by the number of squares on that side. 
+    # In which unit you will measure is completely your choice but just keep in mind that the translation vectors from OpenCV or the `Eye` output from the scripts in this project will be in the same unit of measurement.
+    # For with the measure you use it will be measured back to you. (Luke 6:38)
     board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
+
     params = cv2.aruco.DetectorParameters()
 
     # Detect markers in the undistorted image
@@ -232,6 +258,13 @@ def detectPoseCharucoBoard(calibrate):
     dist_coeffs = np.load('dist_coeffs.npy')
     print( '\n Camera Matrix', camera_matrix, '\n', "Distortion coeff", dist_coeffs)
     dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT)
+
+    # We have to input the size of a square and the size of a marker in the second and third argument.
+    # There are two ways to measure the size of a square: 
+    #          either measure the size of one square, 
+    #          or measure the size of a side of the board and divide it by the number of squares on that side. 
+    # In which unit you will measure is completely your choice but just keep in mind that the translation vectors from OpenCV or the `Eye` output from the scripts in this project will be in the same unit of measurement.
+    # For with the measure you use it will be measured back to you. (Luke 6:38)
     board = cv2.aruco.CharucoBoard((14, 7), 341.4/16, (341.4/16)*0.7, dictionary)
 
     all_charuco_corners = []
@@ -239,6 +272,10 @@ def detectPoseCharucoBoard(calibrate):
     rvecs = []
     tvecs = []
 
+    # বিধ্বংসই নবনির্মাণের কারণ, পার্থ।
+    # উদ্ভিদের একটি শাখা কর্তন করলে আরেকটি শাখার জন্ম হয়।
+    # তুমি আজকের বিদ্ধংস নিয়ে কেন ভয়ভীত হচ্ছ?
+    # কাল পুনঃ নবনির্মাণ হবে এ সত্য কি জানো না?
     shutil.rmtree('./detectedMarkersDrawn')
     shutil.rmtree('./undistorted_images')
     
@@ -246,6 +283,7 @@ def detectPoseCharucoBoard(calibrate):
         os.makedirs("./detectedMarkersDrawn")
     if not os.path.exists("./undistorted_images"):
         os.makedirs("./undistorted_images")
+
     print('image files', json1.getImageFiles(calibrate))
     for i in range(len(json1.getImageFiles(calibrate))):
         rvec, tvec, charuco_corners, charuco_ids=detect_pose(i, camera_matrix, dist_coeffs, calibrate)

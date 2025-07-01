@@ -27,7 +27,7 @@ def writeUpLookatEye( camera_matrix, calibrate, i, matrix):
     json_object['Data']['Up'] = matrix[:, 0].tolist()
     json_object['Data']['Lookat'] = matrix[:, 1].tolist()
     json_object['Data']['Eye'] = matrix[:, 2].tolist()
-    json_object['Data']['FovY']= round(math.degrees(2 * math.atan(image.shape[0] / (2 * camera_matrix[1,1]))))
+    json_object['Data']['FovY']= round(math.degrees(2 * math.atan(json_object['Data']['Res'][1] / (2 * camera_matrix[1,1]))))
     if calibrate=="paired":
         json_object['Data']['Name']= image_files[i][len(PATH_TO_YOUR_PAIRED+"/"):image_files[i].rfind("\\")]
     else:

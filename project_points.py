@@ -61,7 +61,7 @@ def JosepBosch(calibrate, board, camera_matrix, dist_coeffs, rvecs, tvecs, charu
         tot_error_list[-1]+=tot_error
         total_points_list[-1]+=total_points
         tot_error_list[-1]=np.sqrt(tot_error_list[-1]/total_points_list[-1])
-        if(tot_error_list[-1]<2):
+        if(tot_error_list[-1]<4):
             lessErrorImages.append(image_files[i])
         projectPoints(charucoIds[i], charucoCorners[i], image_files[i], camera_matrix, dist_coeffs, rvecs[i], tvecs[i], board)
     print("These images have error less than 2", lessErrorImages)
