@@ -44,7 +44,7 @@ def JosepBosch(calibrate, board, camera_matrix, dist_coeffs, rvecs, tvecs, charu
     img_points = charucoCorners.copy()
     image_files = [os.path.join(PATH_TO_YOUR_IMAGES, f) for f in os.listdir(PATH_TO_YOUR_IMAGES) if f.endswith(".png")]
     
-    if calibrate=="paired":
+    if(calibrate=="paired" or calibrate=="ela"):
         image_files.sort(key=lambda x: x.replace(".png", "\\"))
     else:
         image_files.sort()

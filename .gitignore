@@ -4,6 +4,4 @@ lessThan2RPE/
 projectionError/
 scatterPlots/
 undistorted_images/
-/pairedImages
-ruff.toml
-/pairedImages2
+*.nef

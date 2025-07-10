@@ -5,6 +5,7 @@ import raw
 PATH_TO_YOUR_IMAGES = './calibration_images'
 PATH_TO_YOUR_COLORS = './Colors'
 PATH_TO_YOUR_PAIRED = './pairedImages'
+PATH_TO_FOUR= './chaarAdhyay'
 def getImageFiles(calibrate):
     # Load PNG images from folder
     if(calibrate=="images"):
@@ -13,6 +14,8 @@ def getImageFiles(calibrate):
         image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_COLORS) for name in files]
     elif(calibrate=="paired"):
         image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_PAIRED) for name in files if name.endswith("_0.nef")]
+    elif(calibrate=="ela"):
+        image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_FOUR) for name in files if name=='250.nef']
     image_files.sort()  # Ensure files are in order
     return image_files
 def writeUpLookatEye( camera_matrix, calibrate, i, matrix):
@@ -30,6 +33,8 @@ def writeUpLookatEye( camera_matrix, calibrate, i, matrix):
     json_object['Data']['FovY']= round(math.degrees(2 * math.atan(json_object['Data']['Res'][1] / (2 * camera_matrix[1,1]))))
     if calibrate=="paired":
         json_object['Data']['Name']= image_files[i][len(PATH_TO_YOUR_PAIRED+"/"):image_files[i].rfind("\\")]
+    elif calibrate=="ela":
+        json_object['Data']['Name']= image_files[i][len(PATH_TO_FOUR+"/"):image_files[i].rfind("\\")]
     else:
         json_object['Data']['Name']= image_files[i][len(PATH_TO_YOUR_IMAGES+"/"):-4]
     #print(json_object)

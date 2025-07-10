@@ -153,7 +153,7 @@ def calibrate_and_save_parameters(calibrate):
     os.makedirs("./undistorted_images")
     
     for i, image_file in enumerate(image_files):
-        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
+        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired" or calibrate=='ela') else cv2.imread(image_file)
         #image=cv2.imread(image_file)
         #print("I am reading image of length", image.shape)
         #print(image.shape, Image.open("0.png").size)
@@ -183,7 +183,7 @@ def calibrate_and_save_parameters(calibrate):
             #print('retval', charuco_retval, 'charuco ids length', charuco_ids)
             drawDetectedCornersCharuco(image_copy, charuco_corners,
                                    charuco_ids)
-            if(calibrate=="paired"):
+            if(calibrate=="paired" or calibrate=="ela"):
                 cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].index("\\"):image_files[i].rindex("\\")]+".png", image_copy)
             else:
                 cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].rindex("\\"):-4]+".png", image_copy)
@@ -215,7 +215,7 @@ def detect_pose(i, camera_matrix, dist_coeffs, calibrate):
     # Undistort the image
     image_files = json1.getImageFiles(calibrate)
     print("reading", image_files[i])
-    image = raw.raw_to_npArray(image_files[i]) if (calibrate=="images" or calibrate=="paired") else cv2.imread(image_files[i])
+    image = raw.raw_to_npArray(image_files[i]) if (calibrate=="images" or calibrate=="paired" or calibrate=="ela") else cv2.imread(image_files[i])
     image_copy = image.copy()
     undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
 
@@ -243,7 +243,7 @@ def detect_pose(i, camera_matrix, dist_coeffs, calibrate):
         charuco_retval, charuco_corners, charuco_ids = cv2.aruco.interpolateCornersCharuco(marker_corners, marker_ids, undistorted_image, board)
         #print('charuco ids', charuco_ids)
         drawDetectedCornersCharuco(image_copy, charuco_corners, charuco_ids)
-        if(calibrate=="paired"):
+        if(calibrate=="paired" or calibrate=="ela"):
             cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].index("\\"):image_files[i].rindex("\\")]+".png", image_copy)
         else:
             cv2.imwrite("detectedMarkersDrawn/"+image_files[i][image_files[i].rindex("\\"):-4]+".png", image_copy)
