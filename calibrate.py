@@ -113,11 +113,11 @@ def process_calibration_results(calibrate, board, all_charuco_corners, all_charu
     # Load PNG images from folder
     image_files = json1.getImageFiles(calibrate)
     for image_file in image_files:
-        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired") else cv2.imread(image_file)
+        image = raw.raw_to_npArray(image_file) if(calibrate=="images" or calibrate=="paired" or calibrate=="ela") else cv2.imread(image_file)
         undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs)
         # cv2.imshow('Undistorted Image', undistorted_image)
         # cv2.waitKey(0)
-        if calibrate=="paired":
+        if calibrate=="paired" or calibrate=="ela":
             cv2.imwrite("undistorted_images/"+image_file[image_file.index("\\"):image_file.rindex("\\")]+".png", undistorted_image)
         else:
             cv2.imwrite("undistorted_images/"+image_file[21:-4]+".png", undistorted_image)
