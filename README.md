@@ -129,6 +129,7 @@ This project was built with the help of the following articles, guides, and comm
 - [Tutorial Threshold inRange](https://docs.opencv.org/3.4/da/d97/tutorial_threshold_inRange.html)
   - Should we use hsv for thresholding? Why?
 - [drawing an small axis on pattern works, but a longer axis produce totally wrong result](https://forum.opencv.org/t/how-it-is-possible-drawing-an-small-axis-on-pattern-works-but-a-longer-axis-produce-totally-wrong-result/2934/3)
+- [IPC - inter-process communication](https://www.autohotkey.com/boards/viewtopic.php?t=124720)
 ---
 
 Happy learning and posing! 🎯
