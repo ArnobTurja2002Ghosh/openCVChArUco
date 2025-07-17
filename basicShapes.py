@@ -24,14 +24,13 @@ def basic_shapes():
     cv2.imwrite("basic_shapes.png", image)
 
 def boundary():
-    top_left = (0, 0)
-    bottom_right = tuple(map(int, (((width/16)/2)/10, height) ))
-    for i in range(10):   
-        color1 = (list(np.random.choice(range(256), size=3)))  
-        color =[int(color1[0]), int(color1[1]), int(color1[2])]  
-        cv2.rectangle(image,top_left,bottom_right, color,-1)
-        top_left=tuple(map(int,(bottom_right[0], top_left[1]) ))
-        bottom_right=tuple(map(int, (bottom_right[0]+((width/16)/2)/10, bottom_right[1]) ))
+    pt1 = (0, 0)
+    pt2=(0, height)
+    for i in range(0, int(width/16), 5):  
+        pt1 = (i, 0)
+        pt2 = (i, height) 
+        cv2.line(image,pt1,pt2,(0,0,0),1)
+        
     top_left = tuple(map(int, (width-((width/16)/2)/10, 0) ))
     bottom_right = tuple(map(int, (width, height) ))
     for i in range(10):
