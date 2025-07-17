@@ -29,7 +29,7 @@ def boundary():
     for i in range(0, int(width/16), 5):  
         pt1 = (i, 0)
         pt2 = (i, height) 
-        cv2.line(image,pt1,pt2,(0,0,0),1)
+        cv2.line(image,pt1,pt2,(0,0,255),1)
         
     top_left = tuple(map(int, (width-((width/16)/2)/10, 0) ))
     bottom_right = tuple(map(int, (width, height) ))
