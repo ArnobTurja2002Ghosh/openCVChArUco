@@ -33,7 +33,7 @@ def boundary():
         (0, 0),
         (width - 1, height - 1),
         (255, 255, 255),
-        thickness=1
+        thickness=2
     )
     cv2.imwrite("boundary.png", image)
 
