@@ -1,0 +1,61 @@
+{
+    "builderAttributes": {
+        "cameraName": "test",
+        "pos": [
+            0,
+            0,
+            0
+        ],
+        "rot": [
+            "0",
+            "0",
+            "0"
+        ],
+        "desiredSubCamRes": [
+            19600,
+            19600
+        ],
+        "inBehindDist": 10,
+        "inFarDist": 0.949,
+        "octCamType": 3,
+        "scaleToRealWorld": 1,
+        "capturePlaneDimensions": [
+            13.656,
+            7.632
+        ]
+    },
+    "simulatorAttributes": {
+        "type": "lightfieldJPEG",
+        "position": [
+            0,
+            0,
+            0
+        ],
+        "orientation": [
+            0,
+            0,
+            0
+        ],
+        "physicalDimensions": [
+            13.656,
+            7.632
+        ],
+        "sigma": 0.067,
+        "windowSize": 25
+    },
+    "lightFieldAttributes": {
+        "spatialResolution": [
+            819,
+            455
+        ],
+        "directionalResolution": [
+            81,
+            1
+        ],
+        "displayFOV": [
+            60,
+            179
+        ],
+        "file": "colors_integral.png"
+    }
+}

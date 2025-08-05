@@ -31,10 +31,11 @@ def undistort():
         img_erosion = cv2.erode(img_erosion, kernel, iterations=3)
         cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_thresh.png", thresh)
         
-undistort()
+#undistort()
 
 image_files1 = [os.path.join(path, name) for path, subdirs, files in os.walk("chessboard") for name in files]
 image_files1.sort()  # Ensure files are in order
+
 
 def crop():
     for image_file1, image_file in zip(image_files1, image_files):
@@ -57,7 +58,7 @@ def crop():
         print(threshval)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "thresh_"+os.path.basename(image_file1)), thresh)
 
-crop()
+#crop()
 
 def difference():
     for image_file1, image_file in zip(image_files1, image_files):
@@ -69,6 +70,6 @@ def difference():
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "diff_"+os.path.basename(image_file1)), thresh2)
         src1 = cv2.imread("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+".png")
         src2= cv2.imread(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], os.path.basename(image_file1)))
-        dst = cv2.addWeighted(src1, 0.5, src2, 0.5, 0.0)
+        dst = cv2.addWeighted(src1, 0.3, src2, 0.7, 0.0)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "blend_"+os.path.basename(image_file1)), dst)
-difference()
+#difference()
