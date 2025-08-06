@@ -26,14 +26,14 @@ for i in cameraConfig2:
 ax.plot([-341.4/16, (15/16)*341.4], [0,0], c='blue', label='FoLD')
 #ax.plot([(15/16)*341.4 - 700*np.tan(np.pi/6), (15/16)*341.4], [700,0], c='grey')
 #ax.plot([-341.4/16 + 700*np.tan(np.pi/6), -341.4/16], [700,0], c='grey')
-ax.fill_betweenx([600,0], [(15/16)*341.4 - 600*np.tan(np.pi/6), (15/16)*341.4], [(15/16)*341.4 + 600*np.tan(np.pi/6), (15/16)*341.4], color='grey', alpha=0.1)
-ax.fill_betweenx([600,0], [-341.4/16 + 600*np.tan(np.pi/6), -341.4/16], [-341.4/16 - 600*np.tan(np.pi/6), -341.4/16], color='grey', alpha=0.1)
+ax.fill_betweenx([800,0], [(15/16)*341.4 - 800*np.tan(np.pi/6), (15/16)*341.4], [(15/16)*341.4 + 800*np.tan(np.pi/6), (15/16)*341.4], color='grey', alpha=0.1)
+ax.fill_betweenx([800,0], [-341.4/16 + 800*np.tan(np.pi/6), -341.4/16], [-341.4/16 - 800*np.tan(np.pi/6), -341.4/16], color='grey', alpha=0.1)
 
 ax.set_xlabel('X (mm)')
 ax.set_ylabel('Z (mm)')
 ax.set_title('Bottom-Up View (XZ Plane)')
-ax.legend(bbox_to_anchor=(0, -0.3, 1, 1), loc='lower left',
-                      ncols=5, mode="expand", borderaxespad=0.)
+ax.legend(bbox_to_anchor=(0, -0.4, 1, 1), loc='lower left',
+                      ncols=6, mode="expand", borderaxespad=0.)
 ax.grid(True)
-plt.savefig('11_13_15.png', dpi=100)
+plt.savefig('all.png', dpi=100)
 plt.show()

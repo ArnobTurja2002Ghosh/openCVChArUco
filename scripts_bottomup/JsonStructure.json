@@ -1,0 +1,30 @@
+{
+    "testName": "JsonStructure",
+    "LfConfig": [
+        "Json/LfConfig/LF1.json",
+        "Json/LfConfig/LF2.json",
+        "Json/LfConfig/LF3.json"
+    ],
+    "cameraConfig": [
+        "Default\\CameraShaders\\camShader0.json",
+        "Default\\CameraShaders\\camShader0_0.json",
+        "Default\\CameraShaders\\camShader0_1.json",
+        "Default\\CameraShaders\\camShader10.json",
+        "Default\\CameraShaders\\camShader11.json",
+        "Default\\CameraShaders\\camShader12.json",
+        "Default\\CameraShaders\\camShader13.json",
+        "Default\\CameraShaders\\camShader14.json",
+        "Default\\CameraShaders\\camShader15.json",
+        "Default\\CameraShaders\\camShader17.json",
+        "Default\\CameraShaders\\camShader18.json",
+        "Default\\CameraShaders\\camShader19.json",
+        "Default\\CameraShaders\\camShader1.json",
+        "Default\\CameraShaders\\camShader2.json",
+        "Default\\CameraShaders\\camShader3.json",
+        "Default\\CameraShaders\\camShader4.json",
+        "Default\\CameraShaders\\camShader5.json",
+        "Default\\CameraShaders\\camShader7.json",
+        "Default\\CameraShaders\\camShader8.json",
+        "Default\\CameraShaders\\camShader9.json"
+    ]
+}
