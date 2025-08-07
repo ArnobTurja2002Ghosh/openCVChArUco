@@ -15,15 +15,15 @@ const container = document.getElementById("pairs");
 // Render each pair
 for (let i = 0; i < Math.min(l1.length, l2.length); i++) {
   const pairCol = document.createElement("div");
-  pairCol.className = "pair";
+  //pairCol.className = "pair";
 
   pairCol.innerHTML = `
     <div class="row">
-      <div class="col-md-6 text-center">
+      <div class="col-xxl-6 text-center">
         <img src="${l1[i]}" alt="Image ${i+1} - List 1" class="img-fluid">
         <p> Undistorted real-world image</p>
       </div>
-      <div class="col-md-6 text-center">
+      <div class="col-xxl-6 text-center">
         <img src="${l2[i]}" alt="Image ${i+1} - List 2" class="img-fluid">
         <p> Simulated image. Pose ${l1[i].substring(l1[i].indexOf("\\")+1, l1[i].lastIndexOf("\\"))}</p>
       </div>
