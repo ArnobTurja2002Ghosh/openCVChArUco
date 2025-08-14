@@ -1,15 +1,18 @@
+
 import cv2
 import numpy as np
 import raw
 import os
-import time
-import shutil
+import json
+import csv
+with open('kalpana.json', 'r') as file:
+    data = json.load(file)
 camera_matrix = np.load('camera_matrix.npy')
 dist_coeffs = np.load('dist_coeffs.npy')
 
 PATH_TO_YOUR_PAIRED = './chaarAdhyay'
 PATH_TO_YOUR_CROP = './UndistortAndCropThese'
-image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_PAIRED) for name in files if name=="350.nef"]
+image_files = [os.path.join(path, name) for path, subdirs, files in os.walk(PATH_TO_YOUR_PAIRED) for name in files if name==data['undistort_file']]
 image_files.sort()  # Ensure files are in order
 
 def undistort():    
@@ -22,18 +25,33 @@ def undistort():
         if not os.path.exists(os.path.join("UndistortAndCropThese", image_file[image_file.index("\\")+1: image_file.rindex("\\")])):
             os.makedirs(os.path.join("UndistortAndCropThese", image_file[image_file.index("\\")+1: image_file.rindex("\\")]))
         cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+".png", undistorted_image)
-        gray1 = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
-        
-        print(threshval)
-        kernel = np.ones((5, 5), np.uint8)
-        img_erosion = cv2.dilate(thresh, kernel, iterations=3)
-        img_erosion = cv2.erode(img_erosion, kernel, iterations=3)
+        gray1 = cv2.cvtColor(undistorted_image, cv2.COLOR_BGR2GRAY)
+        gray2=cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        if data["thresholding_algorithm"] == "global":
+            threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
+            threshval, thresh=cv2.threshold(gray1, 0.25*threshval, 255, cv2.THRESH_BINARY)
+        elif data["thresholding_algorithm"] == "adaptive":
+            #thresh = cv2.adaptiveThreshold(gray1,255,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,9999,data["c"])
+            with open('adaptiveThreshold.csv', encoding='utf-8-sig') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    #print(row)
+                    if( row['src'] == image_file[image_file.index("\\")+1:image_file.rindex("\\")]):
+                        thresh = cv2.adaptiveThreshold(gray1,255,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,int(row['blockSize']),int(row['C']))
+            # thresh2 = cv2.adaptiveThreshold(gray2,255,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,3333,data["c"])
+        #print(threshval)
+        #kernel = np.ones((5, 5), np.uint8)
+        #img_erosion = cv2.dilate(thresh, kernel, iterations=3)
+        #img_erosion = cv2.erode(img_erosion, kernel, iterations=3)
         cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_thresh.png", thresh)
-        
-#undistort()
+        # cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_thresh2.png", thresh2)
 
-image_files1 = [os.path.join(path, name) for path, subdirs, files in os.walk("chessboard") for name in files]
+        # abs_diff = cv2.absdiff(thresh, thresh2)
+        # cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_absdiff.png", abs_diff)
+        
+undistort()
+
+image_files1 = [os.path.join(path, name) for path, subdirs, files in os.walk(data["crop_folder"]) for name in files]
 image_files1.sort()  # Ensure files are in order
 
 
@@ -54,22 +72,27 @@ def crop():
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], os.path.basename(image_file1)), image1)
 
         gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-        threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
+        threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY)
         print(threshval)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "thresh_"+os.path.basename(image_file1)), thresh)
 
-#crop()
+crop()
 
 def difference():
     for image_file1, image_file in zip(image_files1, image_files):
         thresh = cv2.imread("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_thresh.png")
         thresh1= cv2.imread(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "thresh_"+os.path.basename(image_file1)))
         thresh2=cv2.absdiff(thresh, thresh1)
+
+        # thresh01=cv2.imread("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_thresh2.png")
+        # thresh21= cv2.absdiff(thresh01, thresh1)
+
         kernel = np.ones((5, 5), np.uint8)
         img_erosion = cv2.erode(thresh2, kernel, iterations=3)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "diff_"+os.path.basename(image_file1)), thresh2)
+        #cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "diff2_"+os.path.basename(image_file1)), thresh21)
         src1 = cv2.imread("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+".png")
         src2= cv2.imread(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], os.path.basename(image_file1)))
         dst = cv2.addWeighted(src1, 0.3, src2, 0.7, 0.0)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "blend_"+os.path.basename(image_file1)), dst)
-#difference()
+difference()
