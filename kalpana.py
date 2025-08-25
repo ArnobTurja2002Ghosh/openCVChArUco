@@ -5,6 +5,7 @@ import raw
 import os
 import json
 import csv
+import matplotlib.pyplot as plt
 with open('kalpana.json', 'r') as file:
     data = json.load(file)
 camera_matrix = np.load('camera_matrix.npy')
@@ -26,10 +27,22 @@ def undistort():
             os.makedirs(os.path.join("UndistortAndCropThese", image_file[image_file.index("\\")+1: image_file.rindex("\\")]))
         cv2.imwrite("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+".png", undistorted_image)
         gray1 = cv2.cvtColor(undistorted_image, cv2.COLOR_BGR2GRAY)
-        gray2=cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        hist = cv2.calcHist([gray1], [0], None, [256], [0, 256])
+        plt.plot(hist)
+        # label the x-axis
+        plt.xlabel('Pixel Intensity')
+        # label the y-axis
+        plt.ylabel('Number of Pixels')
+        # display the title
+        plt.title('Grayscale Histogram')
         if data["thresholding_algorithm"] == "global":
             threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
+            plt.plot([threshval, threshval], [0, 1e7])
             threshval, thresh=cv2.threshold(gray1, 0.25*threshval, 255, cv2.THRESH_BINARY)
+            plt.plot([threshval, threshval], [0, 1e7])
+            plt.savefig("UndistortAndCropThese/"+image_file[image_file.index("\\")+1:-4]+"_histogram.png")
+            plt.clf()  # Clear the current figure
         elif data["thresholding_algorithm"] == "adaptive":
             #thresh = cv2.adaptiveThreshold(gray1,255,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,9999,data["c"])
             with open('adaptiveThreshold.csv', encoding='utf-8-sig') as csvfile:
@@ -72,8 +85,7 @@ def crop():
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], os.path.basename(image_file1)), image1)
 
         gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-        threshval, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY)
-        print(threshval)
+        _, thresh = cv2.threshold(gray1, 0, 255, cv2.THRESH_BINARY)
         cv2.imwrite(os.path.join(PATH_TO_YOUR_CROP, os.path.basename(image_file1)[:-4], "thresh_"+os.path.basename(image_file1)), thresh)
 
 crop()

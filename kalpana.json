@@ -1,5 +1,5 @@
 {
-    "undistort_file": "350.nef",
-    "crop_folder": "chessboard",
+    "undistort_file": "300.nef",
+    "crop_folder": "Colors",
     "thresholding_algorithm": "global"
 }

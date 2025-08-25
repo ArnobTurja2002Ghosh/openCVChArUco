@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        In <a href="https://pyimagesearch.com/2021/05/12/adaptive-thresholding-with-opencv-cv2-adaptivethreshold/">this</a>
+        tutorial, Adrian Roseback used adaptive thresholding, which considers small neighbors of pixels and then finds an optimal threshold value T for each neighbor.
+        The neighborhood must be large enough to cover sufficient background and foreground pixels, otherwise the value of T will be more or less irrelevant.
+        If we supply a very large neighborhood, then our results will look very similar to global thresholding using the simple thresholding or Otsu’s methods.
+        They computed  the mean grayscale pixel intensity value of each 21×21 sub-region in the image to compute our threshold value T.
+        They set C=10.
+    </p>
+    
+    <p>
+        The blockSize determines the size of the neighbourhood area and C is a constant that is subtracted from the mean or weighted sum of the neighbourhood pixels.
+        In <a href="https://docs.opencv.org/4.x/d7/d4d/tutorial_py_thresholding.html">this OpenCV tutorial</a>, they used a blockSize of 11 and a C value of 2.
+
+    </p>
+    
+    <p>
+        Geeks for Geeks used a larger blockSize of 199 and a C value of 5 in <a href="https://www.geeksforgeeks.org/python/python-thresholding-techniques-using-opencv-set-2-adaptive-thresholding/">this</a> tutorial.
+        Yet, none of them used a blocksize greater than 1000.
+    </p>
+    
+    <p>
+        Even <a href="https://docs.opencv.org/4.x/d7/d1b/group__imgproc__misc.html#ga72b913f352e4a1b1b397736707afcde3">the documentation</a> for OpenCV’s adaptiveThreshold() function, by giving "3, 5, 7, and so on" as examples of valid blockSize values, seems to imply that the size of a pixel neighborhood should be small.
+        According to the documentation, the C may be negative, but normally, in most implementations of the function found online, C is a positive integer.
+    </p>
+    
+    <p>
+        In this piece of document, we are going explore some real-world images where four-figures-large blockSizes and negative C values can be useful.
+        
+    </p>
+</body>
+</html>

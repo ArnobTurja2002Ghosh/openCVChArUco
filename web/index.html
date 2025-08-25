@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Side-by-Side Image Pairs</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Your custom CSS -->
+<!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+<body class="bg-light">
+
+<div class="container py-4" id="pairs">
+  
+  <div class="mb-4 text-center">
+    <img src="./all.png" alt="" class=""/>
+  </div>
+  <h1 class="mb-4 text-center">Image Pairs</h1>
+</div>
+
+<!-- Bootstrap JS (for responsiveness, not required for basic display) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your JS -->
+<script src="side_by_side.js"></script>
+
+<div style="margin: 4em;">
+  <h3>Did you know?</h3>
+  In the <a href="https://www.sciencedirect.com/science/article/pii/S0031320314000235">paper</a> that gave birth to ArUco markers, Sergio Garrido Jurado et al did camera pose estimation to test their fiducial marker.
+  They applied the camera pose estimation to project a virtual scene on their fiducial marker, whereas we applied camera pose estimation to simulate real-world photos.
+  The figure below shows the virtual scene they used.
+  <img src="https://ars.els-cdn.com/content/image/1-s2.0-S0031320314000235-gr1.jpg" alt="virtual scene"/>
+  <p>When I saw that green character in the scene, my reaction was:</p>
+  <img src="https://media.tenor.com/zlHep5Bp4CsAAAAM/ohhp.gif" alt="I know that guy">
+  <p>
+    but could not remember who. The whole paper referred to it as merely a "virtual character": the audacityyyy. 
+    There was another figure in the paper that gave a better look of the character:
+  </p>
+  
+  <img src="https://ars.els-cdn.com/content/image/1-s2.0-S0031320314000235-gr15.jpg" alt="virtual scene"/>
+  <p>
+    It's definitely an ogre - I know when I see one - and then I remembered. This is Sinbad, OGRE's official mascot as of January 2010. 
+    The character design and 3D model were made by Zi Ye with input from the OGRE community. 
+    Sergio Garrido Jurado et al were free to use the model in their paper but given the licence Sinbad was under, they were supposed to give appropriate credit and indicate the change that was made; as seen in the figure, Sinbad is moving around a "virtual floor" which idk is copied from where.
+  </p>
+  
+  <h3>We shall do better.</h3>  
+  <p>
+    The chess scene you see in this page was an artwork by <a href="https://www.linkedin.com/in/mgcolbourne/">Matthew Colbourne</a> using the following assets from Polyhaven
+    <div class="container py-4" id="polyhaven">
+      <div class="row">
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/Camera_01">
+            <img src="https://cdn.polyhaven.com/asset_img/primary/Camera_01.png?height=760&quality=95" alt="" class="img-fluid">
+          </a>
+          camera model
+        </div>
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/folding_wooden_stool"><img src="https://cdn.polyhaven.com/asset_img/primary/folding_wooden_stool.png?height=760&quality=95" alt="" class="img-fluid">
+          </a>
+          folding wooden stool model 
+        </div>
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/modern_arm_chair_01"><img src="https://cdn.polyhaven.com/asset_img/primary/modern_arm_chair_01.png?height=760&quality=95" alt="" class="img-fluid">
+          </a>
+          modern arm chair model
+        </div>
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/chess_set"><img src="https://cdn.polyhaven.com/asset_img/primary/chess_set.png?height=760&quality=95" alt="" class="img-fluid">
+          </a>
+          chess set model
+        </div>
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/brass_goblets"><img src="https://cdn.polyhaven.com/asset_img/renders/brass_goblets/orth_side.png?height=760&quality=95" alt="" class="img-fluid">
+          </a>
+          brass goblets model
+        </div>
+        <div class="col-xxl-2 text-center">
+          <a href="https://polyhaven.com/a/red_brick">
+            <img src="https://cdn.polyhaven.com/asset_img/primary/red_brick.png?height=760&quality=95" alt="" class="img-fluid">
+          
+          </a>
+          red brick texture
+        </div>
+      </div>
+    </div>
+    
+    The scene was displayed on a <a href="https://lookingglassfactory.com/looking-glass-16-lightfield">16-inch Looking Glass display</a>.
+  </p>
+  <p>The simulator was developed by <a href="https://www.vaclab.ca/">VACLAB</a>. The camera pose estimation was done by Arnob - oh hi, that's me.</p>
+</div>
+</body>
+</html>
