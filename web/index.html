@@ -6,7 +6,7 @@
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="westonvincze.css">
 <!-- Your custom CSS -->
 <!-- <link rel="stylesheet" href="styles.css"> -->
 </head>
@@ -48,7 +48,9 @@
   
   <h3>We shall do better.</h3>  
   <p>
-    The chess scene you see in this page was an artwork by <a href="https://www.linkedin.com/in/mgcolbourne/">Matthew Colbourne</a> using the following assets from Polyhaven
+    We shall do a better job at citation.
+    <div class="animatedSprite" style="width: 819px; height: 455px;"></div>
+    The chess scene you saw in this page is an artwork by <a href="https://www.linkedin.com/in/mgcolbourne/">Matthew Colbourne</a> using the following assets from Polyhaven
     <div class="container py-4" id="polyhaven">
       <div class="row">
         <div class="col-xxl-2 text-center">
@@ -80,7 +82,6 @@
         <div class="col-xxl-2 text-center">
           <a href="https://polyhaven.com/a/red_brick">
             <img src="https://cdn.polyhaven.com/asset_img/primary/red_brick.png?height=760&quality=95" alt="" class="img-fluid">
-          
           </a>
           red brick texture
         </div>
@@ -89,7 +90,161 @@
     
     The scene was displayed on a <a href="https://lookingglassfactory.com/looking-glass-16-lightfield">16-inch Looking Glass display</a>.
   </p>
-  <p>The simulator was developed by <a href="https://www.vaclab.ca/">VACLAB</a>. The camera pose estimation was done by Arnob - oh hi, that's me.</p>
+  <p>The simulator was developed by <a href="https://www.vaclab.ca/research/">VACLAB</a>. The camera pose estimation was done by Arnob - oh hi, that's me.</p>
+  <h3>Did you know?</h3>
+  <p>
+    Although in the <a href="https://www.sciencedirect.com/science/article/pii/S0031320314000235">paper</a> they applied their fiducial markers for camera pose estimation, the OpenCV implementation of ArUco does not track the camera but tracks the fiducial object.
+    Tracking an object using a camera means continuously identifying its location when either the object or the camera are moving. 
+    3D tracking aims at continuously recovering all six degrees of freedom that define the camera position and orientation relative to the scene, or, equivalently, the 3D displacement of an object relative to the camera.
+    Now given the figures of the virtual scene the paper contains, some 3D tracking obvoiusly took place but we do not know which API they used, or in what format the API took the six degrees of freedom to give the virtual scene.
+    Did they feed the pose of the camera to the API or did they feed the pose of the object to the API? 
+    Not sure if "API" is the proper term but I am using it in the sense that 3D tracking must be one program and projecting a virtual scene must be another so there may be an "API" connecting these two.
+    Is the program that projects the virtual scene made by them from scratch?
+    Well those are some of the questions we will never know the answers to, at least not through their paper. 
+    I guess there were people who realised this before me and so in the <a href="https://www.youtube.com/watch?v=f1LCDsPjobo">video</a> where Jurado demonstrates ArUco there are comments - asking for the source code - that are not attended to.
+  </p>
+  <div class="row">
+    <div class="col-xxl-4">
+      <p>
+        By the way, when I say we will never know how they used their 6 DoFs to project their virtual scene, I do not mean we will never know how to do the same thing they did.
+        There is <a href="https://www.youtube.com/watch?v=hgtjp1jSeB4&lc=UgwGF4jUmWMU_IxUPyR4AaABAg">this video</a> where Kevin Wood overlays a 3D model Baby Yoda on a real scene. 
+        Before you jump to that video, I am letting you know that they don't give away the code in the video because they are selling their source code.
+      </p>
+    </div>
+    <div class="col">
+      <img src=" http://img.youtube.com/vi/hgtjp1jSeB4/mqdefault.jpg" alt="">
+    </div>
+  </div>
+  
+  
+  <p>
+    Can't always expect altruism in the capitalist world, can we?
+    But sometimes, it's Christmas:
+    <div class="row">
+      <div class="col-xxl-5"><img src="https://img.youtube.com/vi/Zvmoz_OhOok/maxresdefault.jpg" alt="" class="img-fluid"></div>
+      <div class="col-xxl-6">
+        OpenCV has a module called ovis; ovis is a simplified rendering wrapper around ogre3d; 
+        in fact the word "ovis" is a diminuitive of "OGRE 3D Visualiser".
+        Around Christmas 2020 Pavel Rojtberg wrote <a href="https://www.ogre3d.org/2020/12/24/augmented-reality-made-simple-with-ogre-and-opencv">this</a> free article teaching you how to project 3D Sindbad on an object using ovis.
+        Yes, we will still never know how exactly Jurado did that but I personally think Jurado too used ovis - I mean there has to be some reason for using the mascot of Ogre3D as their virtual character - right?
+        
+        When you look at the list of modules in your OpenCV contrib, the reason you don’t see ovis in your list is because the ovis module in OpenCV contrib is not included by default in the Python builds on Windows.
+        Here’s why:
+        <ul>
+          <li>ovis depends on OGRE3D, a 3D rendering engine. </li>
+          <li>When OpenCV builds their official precompiled binaries (what you get via <code>pip install opencv-contrib-python==4.8.1.78 numpy</code>), they don’t bundle OGRE3D. That’s why ovis isn’t part of the wheels you can install from PyPI.</li>
+          <li>So if you install with pip on Windows, you get only the modules that can be built without heavy external dependencies. ovis is skipped.</li>
+        </ul>
+      </div>
+    </div>
+    </p>
+  <p>
+    
+    The ovis module has a class WindowScene which is the associated scene and a 3D viewport caused by its virtual camera. 
+    The ovis module works very well with the aruco module. OpenCV gives us the pose of the fiducial object with respect to the camera, not the camera pose with respect to the object. 
+    But to the <code>setCameraPose()</code> method of WindowScene, if we pass the pose from the aruco module and set the boolean argument <code>invert=True</code>, ovis does the calculations behind its veil and finds the camera pose.
+    If we then want to know the pose of the camera, the class includes a method <code>getCameraPose()</code>.
+  </p>
+  <h3>Camera pose estimation is essentially a collaboration between aruco and ovis?</h3>
+  <p>
+    Maybe in a lot of projects around but <b>not in our one</b>.
+    As a programmer, ovis would be convenient for this project but would also burden it with a heavy dependency.
+    The project currently does not demand a 3D rendering, at least not a rendering that demands a Ogre window, so given the state of this project ovis has been avoided. 
+  </p>
+  <h4>The camera pose estimation thing from Jurado's paper is already implemented in OpenCV, MATLAB etc.: your project is just about following their tutorial?</h4>
+  <p>
+    Sure, if you want to put it that way, let's take a look at their tutorial. 
+    According to ChArUco Pose Estimation official tutorial by OpenCV, the coordinate system of the CharucoBoard is placed in the board plane with the Z axis pointing out, and centered in the bottom left corner of the board.
+    According to the MATLAB reference for generateCharucoBoard function, the top-left corner value represents the origin of the board.
+    Maybe MATLAB's implementation of ChArUco is different from that of OpenCV, right? Yes and no, let's clarify this.
+  </p>
+  <p>
+    ChArUco came to MATLAB only in 2024. By 2024 OpenCV saw a lot of changes in its ChArUco but the "bottom left" remained like a zombie in all the versions, written till date (2025-08-31), of the tutorial.
+    Let us spot the grave of this "bottom left" to give peace to its soul.
+  </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-xxl-6 text-center">
+        <img src="https://docs.opencv.org/4.5.5/chaxis.jpg" alt=""/>
+        Charuco Board Axis. OpenCV version 4.5.5
+      </div>
+      <div class="col-xxl-6 text-center">
+        <img src="https://docs.opencv.org/4.6.0/chaxis.jpg" alt=""/>
+        Charuco Board Axis. OpenCV version 4.6.0
+      </div>
+    </div> 
+  </div>
+  <p>
+    Both images are of the same ChArUco board in the same orientation. 
+    For 4.5.5 image we can see that indeed the coordinate system of the CharucoBoard is placed in the board plane with the Z axis pointing out, and centered in the bottom left corner of the board.
+    But in 4.6.0 the coordinate system of the CharucoBoard is placed in the board plane:
+    <ul>
+      <li>with the Z axis pointing into the board plane</li>
+      <li>centered in the top-left corner of the board</li>
+    </ul>
+  </p>
+  
+  <p>The man behind this change is Alexander Panov who fixed the object points order in ChArUco board.</p>
+  <!-- <h3>Why this project?</h3>
+  <p>
+    I can't take credit for the idea, this project derived from (or, is an extension of) my Honors thesis which was Matthew Hamilton's idea and was supervised by him.
+    I thank him for giving me access to VACLAB.
+  </p>
+  <p>
+     Please note that, yes, the thesis was related to holographic displays and this page includes images of holographic displays, but this project is not limited to or strictly about holographic displays or the thesis.
+     The project is about camera pose estimation which can be applied in many ways: the thesis was one of the ways. 
+     The project, in terms of its repository, does not contain any simulator or 3D scene.
+  </p> -->
+  <!-- <h3>Why Matthew Hamilton?</h3>
+  <div class="row">
+    <div class="col-xxl-7">
+      <p>
+        Now this is a question anyone who intends to do an Honours should have an answer to, or to extend the question: which professor should I reach out?
+        I got variations of this question when people got to know I was doing an Honours thesis: 
+        How do you choose a supervisor? 
+        Well, eventually it is the supervisor that chooses you once you email them, but on what basis do you choose a professor to email to?
+        Here is my answer:
+      </p>
+      
+      <p>
+        When I was looking for a supervisor for my Honours thesis, I did some research on a few MUN professors and I think Matthew Hamilton is the only one whose research activities are on holographic displays.
+        I wanted to use, or at least see, a holographic display at least once in my life.
+      </p>
+    </div>
+    <div class="col-xxl-3">
+      <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=PWi6hlkAAAAJ&citpid=4" alt="">
+    </div>
+    
+  </div>
+  
+  
+ 
+  
+  <h3>Why holographic displays?</h3>
+  <div class="row">
+    <div class="col-xxl-2">
+      <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1575587271l/52290273.jpg" alt="" class="w-100">
+    </div>
+    <div class="col-xxl-9">
+      <p>
+        I never watched a single episode or film from the Star Trek TV and movie franchise. 
+        In 2021 I learned about the franchise from the book that claimed the Holodeck to be the most immersive form of entertainment.
+        
+        The biggest hurdle, to clear before holodeck could become a reality, is light. When we see an object we see trillions of photons bouncing off of that object.
+        So if you can artificially project trillions of photons toward the eye at just the right angle and intensity you can recreate reality.
+        There are advancements in technologies that are inspired by the sci-fi idea of the holodeck from Star Trek.
+      </p>
+      <p>
+        Being interested in holographic displays, I was still dubious: Maybe the book brought the Star Trek reference for holographic display just to make his book interesting?
+        Have the researchers, who are claimed to be inspired by holodeck, even heard of holodeck?
+        Fortunately, I didn't have to hold the doubt for too long as it was around that time when I started looking for a supervisor for my Honours thesis, so I had to go through a few of the publications of MUN CS professors.
+        I came across Matthew Hamilton's NATO paper, which unlike typical papers written by professors, was readable by general audience.
+        According to the paper the holodeck is considered the holy grail of holographic displays.
+        Apart from the holodeck thing too, the paper overall made me more interested in holographic displays and I claim it a must-read for people with even a slight interest in holographic displays.
+      </p>
+    </div>
+  </div> -->
+  
 </div>
 </body>
 </html>

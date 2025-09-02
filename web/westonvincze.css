@@ -1,0 +1,15 @@
+.animatedSprite {
+  
+  background-image: url("./converted_quilt.png");
+
+  /* duration, timing function, number of iterations, animation name */
+  animation: 9s steps(81) infinite sprite-animation;
+}
+@keyframes sprite-animation {
+  0% {
+    background-position-x: 66339px;
+  }
+  100% {
+    background-position-x: 0;
+  }
+}
